@@ -5,7 +5,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "ST-Muang Thai Insurance",
   icons: {
-    icon: ["/logo.svg"],
+    icon: [
+      {
+        url: "./logo.svg",
+        type: "image/svg",
+      },
+    ],
   },
 };
 
