@@ -25,41 +25,42 @@ function Banner() {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    async function getAdvert() {
+    async function getBanner() {
       try {
-        // const response = await axios.get(
-        //   `${environment.base_url}/banner-advertising/active`
-        // );
         const res = await axios.get(
           `https://www.stmuangthai.com/bof/api/banner/page`
         );
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setBannerData(res.data.data);
         setShowBanner(true);
       } catch (error) {
         console.error(error);
       }
     }
-    getAdvert();
+    getBanner();
   }, []);
   return (
     <>
       <div className="sli">
         <div className="sli-banner">
-          <Swiper
-            modules={[Thumbs]}
-            watchSlidesProgress
-            onSwiper={setThumbsSwiper}
-            className="mySwiper"
-          >
-            {bannerData.map((item, i) => {
-              return (
-                <SwiperSlide key={item.id}>
-                  <img src={item.image} alt="image" />
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+          {showBanner ? (
+            <Swiper
+              modules={[Thumbs]}
+              watchSlidesProgress
+              onSwiper={setThumbsSwiper}
+              className="mySwiper"
+            >
+              {bannerData.map((item, i) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <img src={item.image} alt="image" />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="sli-center">
@@ -76,15 +77,22 @@ function Banner() {
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              // controller={{ control: controlledSwiper }}
-              thumbs={{ swiper: thumbsSwiper }}
               modules={[Autoplay, Pagination, Thumbs]}
+              thumbs={{ swiper: thumbsSwiper }}
               className="mySwiper"
             >
               {bannerData.map((item, i) => {
                 return (
                   <SwiperSlide key={item.id}>
-                    <img src={item.image} alt="image" />
+                    <Image
+                      src={item.image}
+                      alt="image"
+                      width={100}
+                      height={200}
+                      quality={100}
+                      placeholder="empty"
+                      //   style={{ width: "500px", height: "100px" }}
+                    />
                   </SwiperSlide>
                 );
               })}
