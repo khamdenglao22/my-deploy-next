@@ -89,9 +89,6 @@ function Banner() {
                       alt="image"
                       width={100}
                       height={200}
-                      quality={100}
-                      placeholder="empty"
-                      //   style={{ width: "500px", height: "100px" }}
                     />
                   </SwiperSlide>
                 );
