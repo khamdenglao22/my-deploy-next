@@ -2,9 +2,28 @@
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import {
+  Autoplay,
+  Pagination,
+  Navigation,
+  A11y,
+  Controller,
+  Thumbs,
+} from "swiper/modules";
 
 function Banner() {
   const [bannerData, setBannerData] = useState([]);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [showBanner, setShowBanner] = useState(false);
+
   useEffect(() => {
     async function getAdvert() {
       try {
@@ -16,6 +35,7 @@ function Banner() {
         );
         console.log(res.data.data);
         setBannerData(res.data.data);
+        setShowBanner(true);
       } catch (error) {
         console.error(error);
       }
@@ -24,19 +44,56 @@ function Banner() {
   }, []);
   return (
     <>
-      {bannerData.map((item) => {
-        return (
-          <div key={item.id}>
-            <img
-              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-              src={item.image}
-              alt="Next.js Logo"
-              width={180}
-              height={37}
-            />
-          </div>
-        );
-      })}
+      <div className="sli">
+        <div className="sli-banner">
+          <Swiper
+            modules={[Thumbs]}
+            watchSlidesProgress
+            onSwiper={setThumbsSwiper}
+            className="mySwiper"
+          >
+            {bannerData.map((item, i) => {
+              return (
+                <SwiperSlide key={item.id}>
+                  <img src={item.image} alt="image" />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </div>
+
+        <div className="sli-center">
+          {showBanner ? (
+            <Swiper
+              slidesPerView={3}
+              spaceBetween={10}
+              loop={true}
+              centeredSlides={true}
+              pagination={{
+                clickable: true,
+              }}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              // controller={{ control: controlledSwiper }}
+              thumbs={{ swiper: thumbsSwiper }}
+              modules={[Autoplay, Pagination, Thumbs]}
+              className="mySwiper"
+            >
+              {bannerData.map((item, i) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <img src={item.image} alt="image" />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
     </>
   );
 }
